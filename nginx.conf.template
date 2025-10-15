@@ -17,6 +17,8 @@ http {
                 return 403;
             }
 
+            limit_except POST { deny all; }
+
             include fastcgi_params;
             fastcgi_pass unix:/run/fcgi.socket;
             fastcgi_param SCRIPT_FILENAME /usr/local/bin/upload-handler.sh;
@@ -31,6 +33,8 @@ http {
         }
 
         location / {
+            limit_except GET { deny all; }
+
             brotli_static on;
             zstd_static on;
             gzip_static on;
