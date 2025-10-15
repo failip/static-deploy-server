@@ -14,9 +14,9 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 RUN adduser www-writer -D -H -s /sbin/nologin
 RUN mkdir -p /var/www/uploads
-RUN chown -R www-writer:www-data /var/www/uploads && chmod -R u=rwx,g=rx,o= /var/www/uploads
+RUN chown -R www-writer:www-data /var/www/uploads && chmod -R u=rwx,g=rx,o=rx /var/www/uploads
 
 RUN mkdir -p /tmp/uploads
-RUN chown -R www-writer:www-data /tmp/uploads && chmod -R u=rwx,g=rx,o= /tmp/uploads
+RUN chown -R www-writer:www-data /tmp/uploads && chmod -R u=rwx,g=rx,o=rx /tmp/uploads
 
 CMD ["/usr/local/bin/docker-entrypoint.sh"]
