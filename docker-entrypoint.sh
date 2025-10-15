@@ -14,5 +14,6 @@ spawn-fcgi -s /run/fcgi.socket -u www-writer -g www-data /usr/bin/fcgiwrap
 
 # Set socket permissions so everyone can access it
 chmod 666 /run/fcgi.socket
+chmod o+rx /var/www/uploads
 
 exec nginx -g 'daemon off;'
