@@ -1,0 +1,37 @@
+worker_processes auto;
+events { worker_connections 1024; }
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile      on;
+
+    server {
+        listen 80;
+
+        location /upload {
+            client_max_body_size 2G;
+
+            if ($http_x_upload_token != "${UPLOAD_SECRET}") {
+                return 403;
+            }
+
+            include fastcgi_params;
+            fastcgi_pass unix:/run/fcgi.socket;
+            fastcgi_param SCRIPT_FILENAME /usr/local/bin/upload-handler.sh;
+            fastcgi_param SCRIPT_NAME /upload;
+            fastcgi_param REQUEST_METHOD $request_method;
+            fastcgi_param CONTENT_TYPE $content_type;
+            fastcgi_param CONTENT_LENGTH $content_length;
+        }
+
+        location / {
+            brotli_static on;
+            zstd_static on;
+            gzip_static on;
+            root /var/www/uploads;
+            try_files $uri $uri/ =404;
+        }
+    }
+}
